@@ -1,18 +1,21 @@
-from src.bedrock import create_client
+from src.bedrock import invoke_model
 
 
 def main():
-    print("=" * 50)
+
+    print("=" * 60)
     print(" AWS Bedrock Chatbot")
-    print("=" * 50)
+    print("=" * 60)
 
-    print("\nConnecting to Amazon Bedrock...")
+    prompt = "What is Amazon Bedrock?"
 
-    client = create_client()
+    print(f"\nYou: {prompt}")
 
-    print("✅ Connected successfully!")
+    response = invoke_model(prompt)
 
-    print(client)
+    print("\nClaude:\n")
+
+    print(response)
 
 
 if __name__ == "__main__":
