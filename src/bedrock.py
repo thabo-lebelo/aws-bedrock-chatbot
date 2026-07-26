@@ -1,35 +1,28 @@
-"""
-Amazon Bedrock client.
-"""
-
 import boto3
-import json
 
-from .config import AWS_REGION
-from .config import MODEL_ID
+from src.config import AWS_REGION, MODEL_ID
 
 
-def create_client():
+class BedrockClient:
     """
-    Create and return a Bedrock Runtime client.
+    Wrapper around the Amazon Bedrock Runtime client.
     """
 
-    return boto3.client(
-        service_name="bedrock-runtime",
-        region_name=AWS_REGION
-    )
+    def __init__(self):
+        self.client = boto3.client(
+            "bedrock-runtime",
+            region_name=AWS_REGION
+        )
 
+        self.model_id = MODEL_ID
 
-def invoke_model(prompt: str) -> str:
-    """
-    Send a prompt to Amazon Bedrock using the Converse API.
-    """
+    def converse(self, prompt: str) -> str:
+        """
+        Send a prompt to Amazon Bedrock using the Converse API.
+        """
 
-    client = create_client()
-
-    try:
-        response = client.converse(
-            modelId=MODEL_ID,
+        response = self.client.converse(
+            modelId=self.model_id,
             messages=[
                 {
                     "role": "user",
@@ -39,16 +32,7 @@ def invoke_model(prompt: str) -> str:
                         }
                     ]
                 }
-            ],
-            inferenceConfig={
-                "maxTokens": 512,
-                "temperature": 0.5
-            }
+            ]
         )
 
         return response["output"]["message"]["content"][0]["text"]
-
-    except ClientError as e:
-        raise RuntimeError(
-            f"Failed to invoke model: {e.response['Error']['Message']}"
-        ) from e

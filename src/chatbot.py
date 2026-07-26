@@ -1,6 +1,6 @@
 import os
 
-from src.bedrock import invoke_model
+from src.bedrock import BedrockClient
 
 
 class BedrockChatbot:
@@ -11,10 +11,11 @@ class BedrockChatbot:
     def __init__(self):
         self.version = "0.2.0"
         self.running = True
+        self.bedrock = BedrockClient()
 
     def ask(self, prompt: str) -> str:
         """Send a prompt to Amazon Bedrock."""
-        return invoke_model(prompt)
+        return self.bedrock.converse(prompt)
 
     def run(self):
         """Main application loop."""
@@ -68,7 +69,7 @@ class BedrockChatbot:
 
         if command == "exit":
             self.running = False
-            print("\n👋 Thanks for using AWS Bedrock Chatbot.")
+            print("\n👋🏽 Thanks for using AWS Bedrock Chatbot.")
             return True
 
         return False
