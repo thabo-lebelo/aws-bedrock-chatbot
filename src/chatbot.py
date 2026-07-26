@@ -1,5 +1,6 @@
 import os
 
+from src.logger import get_logger
 from src.bedrock import BedrockClient
 
 
@@ -11,10 +12,13 @@ class BedrockChatbot:
     def __init__(self):
         self.version = "0.2.0"
         self.running = True
+        self.logger = get_logger()
         self.bedrock = BedrockClient()
+        self.logger.info("AWS Bedrock Chatbot started.")
 
     def ask(self, prompt: str) -> str:
         """Send a prompt to Amazon Bedrock."""
+        self.logger.info(f"Prompt: {prompt}")
         return self.bedrock.converse(prompt)
 
     def run(self):
@@ -37,9 +41,12 @@ class BedrockChatbot:
                 print("\n🤖 AI >")
                 print(response)
                 print("\n" + "-" * 60)
+                self.logger.info("Response received successfully.")
 
             except Exception as ex:
-                print(f"\n❌ {ex}")
+                self.logger.exception(ex)
+                print("\n❌ Something went wrong.")
+                print(str(ex))
 
     def handle_command(self, command: str) -> bool:
 
@@ -68,6 +75,7 @@ class BedrockChatbot:
             return True
 
         if command == "exit":
+            self.logger.info("Application closed.")
             self.running = False
             print("\n👋🏽 Thanks for using AWS Bedrock Chatbot.")
             return True
