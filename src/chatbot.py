@@ -1,8 +1,16 @@
 import os
+import time
 
 from src.logger import get_logger
 from src.bedrock import BedrockClient
-
+from src.constants import (
+    APP_NAME,
+    APP_DESCRIPTION,
+    APP_VERSION,
+    DEFAULT_MODEL_NAME,
+    DIVIDER,
+    AVAILABLE_COMMANDS
+)
 
 class BedrockChatbot:
     """
@@ -36,17 +44,23 @@ class BedrockChatbot:
                 continue
 
             try:
+                start = time.perf_counter()
                 response = self.ask(prompt)
+                elapsed = time.perf_counter() - start
 
                 print("\n🤖 AI >")
                 print(response)
+                print(f"\n⏱ Response generated in {elapsed:.2f} seconds.")
                 print("\n" + "-" * 60)
                 self.logger.info("Response received successfully.")
 
             except Exception as ex:
                 self.logger.exception(ex)
-                print("\n❌ Something went wrong.")
-                print(str(ex))
+                print("\n❌ Unable to process your request.")
+                print(
+                    "\nCheck your internet connection,"
+                    " AWS credentials, and Bedrock configuration."
+                )
 
     def handle_command(self, command: str) -> bool:
 
@@ -54,14 +68,9 @@ class BedrockChatbot:
 
         if command == "help":
 
-            print("""
-                Available Commands
-                ------------------
-                help      Show this help menu
-                version   Display application version
-                clear     Clear the screen
-                exit      Exit the chatbot
-            """)
+            print("\nAvailable Commands: \n")
+            for command, description in AVAILABLE_COMMANDS.items():
+                print(f"{command:<10} {description} \n")
 
             return True
 
@@ -77,7 +86,7 @@ class BedrockChatbot:
         if command == "exit":
             self.logger.info("Application closed.")
             self.running = False
-            print("\n👋🏽 Thanks for using AWS Bedrock Chatbot.")
+            print("\n👋🏽 Thanks for using Thabo's chatbot.\n")
             return True
 
         return False
@@ -86,10 +95,15 @@ class BedrockChatbot:
         os.system("cls" if os.name == "nt" else "clear")
 
     def print_banner(self):
-        print("=" * 60)
-        print("🤖 AWS Bedrock Chatbot")
-        print("Building AI Applications on AWS")
+        print("\n" + DIVIDER)
+        print("\n" + f"🤖 {APP_NAME}")
+        print("\n" + APP_DESCRIPTION)
         print()
-        print(f"Version : v{self.version}")
-        print("Model   : Amazon Nova Lite")
-        print("=" * 60)
+
+        print("\n" + f"Version : v{APP_VERSION}")
+        print("\n" + f"Model   : {DEFAULT_MODEL_NAME}")
+
+        print("\n" + DIVIDER)
+
+        print("\n" + "Type 'help' to display available commands.")
+        print("\n" + "Ready!")
