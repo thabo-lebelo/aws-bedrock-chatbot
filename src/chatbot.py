@@ -1,40 +1,80 @@
+import os
+
 from src.bedrock import invoke_model
 
 
 class BedrockChatbot:
     """
-    Simple command-line chatbot powered by Amazon Bedrock.
+    Command-line chatbot powered by Amazon Bedrock.
     """
 
     def __init__(self):
         self.version = "0.2.0"
+        self.running = True
 
     def ask(self, prompt: str) -> str:
-        """
-        Send a prompt to Amazon Bedrock and return the response.
-        """
+        """Send a prompt to Amazon Bedrock."""
         return invoke_model(prompt)
 
     def run(self):
-        """
-        Start the chatbot.
-        """
+        """Main application loop."""
         self.print_banner()
 
-        while True:
-            prompt = input("\nYou > ").strip()
+        while self.running:
+            prompt = input("\n👨🏽‍🦲 You > ").strip()
 
             if not prompt:
+                print("⚠️ Please enter a prompt.")
                 continue
 
-            if prompt.lower() == "exit":
-                print("\n👋 Thanks for using AWS Bedrock Chatbot.")
-                break
+            if self.handle_command(prompt):
+                continue
 
-            response = self.ask(prompt)
+            try:
+                response = self.ask(prompt)
 
-            print("\nAI >")
-            print(response)
+                print("\n🤖 AI >")
+                print(response)
+                print("\n" + "-" * 60)
+
+            except Exception as ex:
+                print(f"\n❌ {ex}")
+
+    def handle_command(self, command: str) -> bool:
+
+        command = command.lower()
+
+        if command == "help":
+
+            print("""
+                Available Commands
+                ------------------
+                help      Show this help menu
+                version   Display application version
+                clear     Clear the screen
+                exit      Exit the chatbot
+            """)
+
+            return True
+
+        if command == "version":
+            print(f"\nVersion: {self.version}")
+            return True
+
+        if command == "clear":
+            self.clear_screen()
+            self.print_banner()
+            return True
+
+        if command == "exit":
+            self.running = False
+            print("\n👋 Thanks for using AWS Bedrock Chatbot.")
+            return True
+
+        return False
+
+    def clear_screen(self):
+        os.system("cls" if os.name == "nt" else "clear")
 
     def print_banner(self):
         print("=" * 60)
