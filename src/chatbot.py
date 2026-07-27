@@ -98,7 +98,6 @@ class BedrockChatbot:
         print("\n" + DIVIDER)
         print("\n" + f"🤖 {APP_NAME}")
         print("\n" + APP_DESCRIPTION)
-        print()
 
         print("\n" + f"Version : v{APP_VERSION}")
         print("\n" + f"Model   : {DEFAULT_MODEL_NAME}")

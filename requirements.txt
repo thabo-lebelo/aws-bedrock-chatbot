@@ -9,3 +9,4 @@ python-dotenv==1.2.1
 s3transfer==0.16.1
 six @ file:///AppleInternal/Library/BuildRoots/2c89a47b-9dd5-11ef-938f-6e654a286000/Library/Caches/com.apple.xbs/Sources/python3/six-1.15.0-py2.py3-none-any.whl
 urllib3==1.26.20
+pytest==8.4.1
