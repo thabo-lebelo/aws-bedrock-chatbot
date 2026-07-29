@@ -14,8 +14,8 @@ Rather than building disconnected demos, this project evolves over time. Each ar
 | --------- | ------------------------------------------- | -------- | :---------: |
 | ✅ Part 1  | My First Conversation with Amazon Bedrock | `v0.1.0` |   Complete  |
 | ✅ Part 2 | Building an Interactive CLI Chatbot         | `v0.2.0` | Complete |
-| 🚧 Part 3  | Adding Conversation Memory                  | `v0.3.0` |   In Progress   |
-| ⏳ Part 4  | Streaming Responses                         | `v0.4.0` |   Planned   |
+| ✅ Part 3  | Adding Conversation Memory                  | `v0.3.0` |   Complete   |
+| 🚧 Part 4  | Streaming Responses                         | `v0.4.0` |   In Progress   |
 | ⏳ Part 5  | Prompt Engineering                          | `v0.5.0` |   Planned   |
 | ⏳ Part 6  | Comparing Foundation Models                 | `v0.6.0` |   Planned   |
 | ⏳ Part 7  | Structured Outputs                          | `v0.7.0` |   Planned   |
