@@ -33,3 +33,25 @@ def test_history_preserves_order():
 
     assert messages[0]["role"] == "user"
     assert messages[1]["role"] == "assistant"
+
+def test_reset_clears_history():
+    history = ConversationHistory()
+
+    history.add_user_message("Hello")
+    history.add_assistant_message("Hi")
+
+    history.clear()
+
+    assert history.size() == 0
+    assert history.is_empty()
+
+def test_formatted_history():
+    history = ConversationHistory()
+
+    history.add_user_message("Hello")
+    history.add_assistant_message("Hi!")
+
+    output = history.formatted_history()
+
+    assert "Hello" in output
+    assert "Hi!" in output

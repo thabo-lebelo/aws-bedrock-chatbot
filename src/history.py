@@ -41,6 +41,23 @@ class ConversationHistory:
         """
         return self._messages
 
+    def formatted_history(self) -> str:
+        """
+        Return the conversation in a human-readable format.
+        """
+        if not self._messages:
+            return "No conversation history."
+
+        output = []
+
+        for message in self._messages:
+            role = "👨🏽‍🦲 You" if message["role"] == "user" else "🤖 AI"
+            text = message["content"][0]["text"]
+
+            output.append(f"{role}: {text}")
+
+        return "\n\n".join(output)
+
     def clear(self) -> None:
         self._messages.clear()
 

@@ -14,6 +14,8 @@ SECTION_DIVIDER = "-" * 70
 AVAILABLE_COMMANDS = {
     "help": "Display available commands",
     "version": "Display application version",
+    "history": "Display the current conversation",
+    "reset": "Clear the current conversation",
     "clear": "Clear the terminal",
     "exit": "Exit the application"
 }

@@ -86,6 +86,29 @@ class BedrockChatbot:
             print(f"\nVersion: {self.version}")
             return True
 
+        if command == "history":
+            print()
+
+            print("=" * 70)
+            print("Conversation History")
+            print("=" * 70)
+
+            print(self.history.formatted_history())
+
+            print("=" * 70)
+
+            return True
+
+        if command == "reset":
+
+            self.history.clear()
+
+            self.logger.info("Conversation history cleared.")
+
+            print("\n✅ Conversation history has been cleared.")
+
+            return True    
+
         if command == "clear":
             self.clear_screen()
             self.print_banner()
