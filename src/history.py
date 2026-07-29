@@ -46,3 +46,6 @@ class ConversationHistory:
 
     def size(self) -> int:
         return len(self._messages)
+
+    def is_empty(self) -> bool:
+        return len(self._messages) == 0

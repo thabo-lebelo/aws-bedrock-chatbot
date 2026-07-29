@@ -11,6 +11,7 @@ from src.constants import (
     DIVIDER,
     AVAILABLE_COMMANDS
 )
+from src.history import ConversationHistory
 
 class BedrockChatbot:
     """
@@ -22,12 +23,19 @@ class BedrockChatbot:
         self.running = True
         self.logger = get_logger()
         self.bedrock = BedrockClient()
+        self.history = ConversationHistory()
         self.logger.info("AWS Bedrock Chatbot started.")
 
     def ask(self, prompt: str) -> str:
-        """Send a prompt to Amazon Bedrock."""
-        self.logger.info(f"Prompt: {prompt}")
-        return self.bedrock.converse(prompt)
+        self.history.add_user_message(prompt)
+
+        response = self.bedrock.converse(
+            self.history.messages()
+        )
+
+        self.history.add_assistant_message(response)
+
+        return response
 
     def run(self):
         """Main application loop."""

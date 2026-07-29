@@ -22,3 +22,14 @@ def test_clear_history():
     history.clear()
 
     assert history.size() == 0
+
+def test_history_preserves_order():
+    history = ConversationHistory()
+
+    history.add_user_message("Hello")
+    history.add_assistant_message("Hi!")
+
+    messages = history.messages()
+
+    assert messages[0]["role"] == "user"
+    assert messages[1]["role"] == "assistant"

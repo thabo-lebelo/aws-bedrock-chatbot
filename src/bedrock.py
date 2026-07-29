@@ -1,5 +1,6 @@
 import boto3
 
+from typing import List
 from src.config import AWS_REGION, MODEL_ID
 
 
@@ -16,23 +17,14 @@ class BedrockClient:
 
         self.model_id = MODEL_ID
 
-    def converse(self, prompt: str) -> str:
+    def converse(self, messages: List[dict]) -> str:
         """
-        Send a prompt to Amazon Bedrock using the Converse API.
+        Send the full conversation history to Amazon Bedrock.
         """
 
         response = self.client.converse(
             modelId=self.model_id,
-            messages=[
-                {
-                    "role": "user",
-                    "content": [
-                        {
-                            "text": prompt
-                        }
-                    ]
-                }
-            ]
+            messages=messages,
         )
 
         return response["output"]["message"]["content"][0]["text"]
