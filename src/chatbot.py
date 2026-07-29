@@ -29,8 +29,10 @@ class BedrockChatbot:
     def ask(self, prompt: str) -> str:
         self.history.add_user_message(prompt)
 
+        self.logger.info(f"Sending {len(self.history.context())} messages to Bedrock.")
+
         response = self.bedrock.converse(
-            self.history.messages()
+            self.history.context()
         )
 
         self.history.add_assistant_message(response)

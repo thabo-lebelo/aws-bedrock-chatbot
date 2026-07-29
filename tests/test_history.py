@@ -55,3 +55,19 @@ def test_formatted_history():
 
     assert "Hello" in output
     assert "Hi!" in output
+
+def test_context_window():
+
+    history = ConversationHistory()
+
+    for i in range(30):
+
+        history.add_user_message(f"Question {i}")
+
+        history.add_assistant_message(f"Answer {i}")
+
+    context = history.context()
+
+    assert len(context) == 20
+
+    assert context[0]["content"][0]["text"] == "Question 20"

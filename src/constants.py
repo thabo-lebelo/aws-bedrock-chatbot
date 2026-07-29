@@ -19,3 +19,5 @@ AVAILABLE_COMMANDS = {
     "clear": "Clear the terminal",
     "exit": "Exit the application"
 }
+
+MAX_CONTEXT_MESSAGES = 20

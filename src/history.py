@@ -1,5 +1,7 @@
 from typing import List
 
+from src.constants import MAX_CONTEXT_MESSAGES
+
 
 class ConversationHistory:
     """
@@ -57,6 +59,12 @@ class ConversationHistory:
             output.append(f"{role}: {text}")
 
         return "\n\n".join(output)
+
+    def context(self):
+        """
+        Return only the most recent messages.
+        """
+        return self._messages[-MAX_CONTEXT_MESSAGES:]
 
     def clear(self) -> None:
         self._messages.clear()
