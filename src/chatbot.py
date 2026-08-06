@@ -35,9 +35,35 @@ class BedrockChatbot:
             self.history.context()
         )
 
-        self.history.add_assistant_message(response)
+        stream = self.bedrock.converse_stream(
+            self.history.context()
+        )
 
-        return response
+        full_response = ""
+
+        print("\n🤖 AI > ", end="", flush=True)
+
+        for event in stream:
+
+            if "contentBlockDelta" not in event:
+                continue
+
+            delta = event["contentBlockDelta"]["delta"]
+
+            if "text" not in delta:
+                continue
+
+            text = delta["text"]
+
+            print(text, end="", flush=True)
+
+            full_response += text
+
+        print("\n")
+
+        self.history.add_assistant_message(full_response)
+
+        return full_response
 
     def run(self):
         """Main application loop."""
@@ -55,14 +81,15 @@ class BedrockChatbot:
 
             try:
                 start = time.perf_counter()
-                response = self.ask(prompt)
+                full_response = self.ask(prompt)
                 elapsed = time.perf_counter() - start
 
                 print("\n🤖 AI >")
-                print(response)
+                # print(response)
                 print(f"\n⏱ Response generated in {elapsed:.2f} seconds.")
                 print("\n" + "-" * 60)
-                self.logger.info("Response received successfully.")
+                # self.logger.info("Response received successfully.")
+                self.logger.info(f"Response streamed successfully ({len(full_response)} characters).")
 
             except Exception as ex:
                 self.logger.exception(ex)
