@@ -28,3 +28,15 @@ class BedrockClient:
         )
 
         return response["output"]["message"]["content"][0]["text"]
+
+    def converse_stream(self, messages):
+        """
+        Stream a response from Amazon Bedrock.
+        """
+
+        response = self.client.converse_stream(
+            modelId=self.model_id,
+            messages=messages,
+        )
+
+        return response["stream"]
