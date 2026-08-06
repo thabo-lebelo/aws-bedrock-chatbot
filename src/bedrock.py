@@ -31,7 +31,7 @@ class BedrockClient:
 
     def converse_stream(self, messages):
         """
-        Stream a response from Amazon Bedrock.
+        Yield text chunks from Amazon Bedrock.
         """
 
         response = self.client.converse_stream(
@@ -39,4 +39,14 @@ class BedrockClient:
             messages=messages,
         )
 
-        return response["stream"]
+        for event in response["stream"]:
+
+            if "contentBlockDelta" not in event:
+                continue
+
+            delta = event["contentBlockDelta"]["delta"]
+
+            if "text" not in delta:
+                continue
+
+            yield delta["text"]

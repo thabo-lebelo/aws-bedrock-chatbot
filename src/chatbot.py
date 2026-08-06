@@ -35,31 +35,19 @@ class BedrockChatbot:
             self.history.context()
         )
 
-        stream = self.bedrock.converse_stream(
-            self.history.context()
-        )
-
         full_response = ""
 
-        print("\n🤖 AI > ", end="", flush=True)
+        for chunk in self.bedrock.converse_stream(
+            self.history.context()
+        ):
 
-        for event in stream:
+            # print("\n🤖 AI > ", end="", flush=True)
 
-            if "contentBlockDelta" not in event:
-                continue
+            print(chunk, end="", flush=True)
 
-            delta = event["contentBlockDelta"]["delta"]
+            full_response += chunk
 
-            if "text" not in delta:
-                continue
-
-            text = delta["text"]
-
-            print(text, end="", flush=True)
-
-            full_response += text
-
-        print("\n")
+            # print("\n")
 
         self.history.add_assistant_message(full_response)
 
@@ -85,10 +73,8 @@ class BedrockChatbot:
                 elapsed = time.perf_counter() - start
 
                 print("\n🤖 AI >")
-                # print(response)
                 print(f"\n⏱ Response generated in {elapsed:.2f} seconds.")
                 print("\n" + "-" * 60)
-                # self.logger.info("Response received successfully.")
                 self.logger.info(f"Response streamed successfully ({len(full_response)} characters).")
 
             except Exception as ex:
